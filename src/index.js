@@ -2,7 +2,7 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const fs=require("fs")
-const uuid=require("uuid")
+const { v4: uuidv4 }=require('uuid')
 const socketio = require('socket.io')
 const Filter = require('bad-words')
 const { generateMessage, generateLocationMessage,generateUploadMessage} = require('./utils/messages')
@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
         const fileType = baseImage.substring("data:".length, baseImage.indexOf("/"))
         const regex = new RegExp(`^data:${fileType}\/${ext};base64,`, 'gi')
         const base64Data = baseImage.replace(regex, "")
-        const filename = `${uuid()}.${ext}`
+        const filename = `${uuidv4()}.${ext}`
         if (!fs.existsSync(`${uploadPath}/uploads/`)) {
             fs.mkdirSync(`${uploadPath}/uploads/`);
         }
