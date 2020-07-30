@@ -14,12 +14,10 @@ const generateLocationMessage = (username, url) => {
     }
 }
 
-const generateUploadMessage = (username,file,fileName,ext) => {
+const generateUploadMessage = (username,base64image) => {
     return {
         username,
-        file,
-        fileName,
-        ext,
+        base64image,
         createdAt: new Date().getTime()
     }
 }

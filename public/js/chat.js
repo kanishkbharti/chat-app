@@ -12,6 +12,7 @@ const $inputFile=document.getElementById('upd')
 const messageTemplate = document.querySelector('#message-template').innerHTML
 const locationMessageTemplate = document.querySelector('#location-message-template').innerHTML
 const uploadMessageTemplate = document.querySelector('#upload-template').innerHTML
+const uploadVideoTemplate = document.querySelector('#video-template').innerHTML
 const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML
 
 
@@ -59,6 +60,7 @@ socket.on('locationMessage', (message) => {
     $messages.insertAdjacentHTML('beforeend', html)
     autoscroll()
 })
+/*
 socket.on('uploadFile', (message) => {
     console.log(message)
      const html = Mustache.render(uploadMessageTemplate, {
@@ -71,8 +73,36 @@ socket.on('uploadFile', (message) => {
      autoscroll()
 })
 
+*/
+/*
+socket.on("addimage",function(msg,base64image){
+    console.log(msg)
+     const html =$('.content').append($('<p>').append($('<b>').text(msg),'<a target="_blank" href="'+ base64image +'"><img src="' + base64image +'" />'))
+     $messages.insertAdjacentHTML('beforeend', html)
+     autoscroll()
+})
+*/
+socket.on("addimage",function(msg,message){
+    console.log(msg)
+    const html = Mustache.render(uploadMessageTemplate, {
+        username: message.username,
+        base64image:message.base64image,
+        createdAt: moment(message.createdAt).format('h:mm a')
+    })   
+     $messages.insertAdjacentHTML('beforeend', html)
+     autoscroll()
+})
 
-
+socket.on("addvideo",function(msg,message){
+    console.log(msg)
+    const html = Mustache.render(uploadVideoTemplate, {
+        username: message.username,
+        base64image:message.base64image,
+        createdAt: moment(message.createdAt).format('h:mm a')
+    })   
+     $messages.insertAdjacentHTML('beforeend', html)
+     autoscroll()
+})
 
 socket.on('roomData', ({ room, users }) => {
     const html = Mustache.render(sidebarTemplate, {
@@ -119,24 +149,34 @@ $sendLocationButton.addEventListener('click', () => {
         })
     })
 })
-
-$inputFile.addEventListener('change', function(e){
-    var data = e.target.files[0]
-    readThenSendFile(data);      
+$(function(){
+$('#upd').on('change', function(e){
+    var data = e.originalEvent.target.files[0]
+    var reader = new FileReader()
+    reader.onload = function(evt){
+       // var msg ={}
+        // msg.file = evt.target.result
+       // msg.fileName = data.name
+        socket.emit('user image', evt.target.result )
+    };
+    reader.readAsDataURL(data);   
 });
 
+})
+
+/*
 function readThenSendFile(data){
 
     var reader = new FileReader()
     reader.onload = function(evt){
-        var msg ={}
+       // var msg ={}
         msg.file = evt.target.result
-        msg.fileName = data.name
-        socket.emit('base64 file', msg)
+       // msg.fileName = data.name
+        socket.emit('user image', msg)
     };
     reader.readAsDataURL(data);
 }
-
+*/
 socket.emit('join', { username, room }, (error) => {
     if (error) {
         alert(error)

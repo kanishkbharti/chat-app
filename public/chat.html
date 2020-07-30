@@ -65,18 +65,34 @@
             </p>
             <!-- ext==="mp4" ? 
             <video
-                src={`${url}`}
+                src=`${url}`
                 alt="video"
                 height="20"
                 width="20"
              />
             : -->
+            <a target="_blank" href= {{base64image}}><img src={{base64image}} height="100" width="100"/>
+            <!-- <a href="'+ {{url}} +'" target="_blank">
             <img
-                    src={`${url}`}
+                    src="'+ {{url}} +'"
                     alt="img"
                     height="20"
                     width="20"
-            />
+            /> -->
+            
+        
+    </div>
+    
+    </script>
+    <script id="video-template" type="text/html">
+        <div class="content">
+            <p>
+                <span class="message__name">{{username}}</span>
+                <span class="message__meta">{{createdAt}}</span>
+            </p>
+        
+            <a target="_blank" href= {{base64image}}><video width="320" height="240" controls><source src={{base64image}} type="video/mp4"></video>
+            
             
         
     </div>
@@ -87,6 +103,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="/js/chat.js"></script>
 </body>
 

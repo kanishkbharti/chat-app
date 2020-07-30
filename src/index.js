@@ -57,6 +57,7 @@ io.on('connection', (socket) => {
         callback()
     })
 
+    /*
     socket.on('base64 file', function (msg) {
         console.log('received base64 file from client')
 
@@ -84,6 +85,24 @@ io.on('connection', (socket) => {
 
 
         );
+    });
+    */
+
+    socket.on('user image',function(image){
+
+        console.log("received");
+        const ext = image.substring(image.indexOf("/") + 1, image.indexOf(";base64"))
+        console.log("Extension:",ext)
+        const user = getUser(socket.id)
+        
+        if(ext==="mp4")
+        {
+        io.sockets.to(user.room).emit('addvideo','Video Received',generateUploadMessage(user.username,image));
+        }
+        else
+        {
+        io.sockets.to(user.room).emit('addimage','Image Received',generateUploadMessage(user.username,image));
+        }
     });
 
     socket.on('disconnect', () => {
